@@ -1,5 +1,3 @@
-import java.lang.reflect.InvocationTargetException;
-
 import sunit.Result;
 import sunit.Runner;
 import sunit.TestResult;
@@ -19,21 +17,26 @@ public class Main {
 		for(final Result testCaseResult : tRes.getTestCases()) {
 			System.out.print("\t-->");
 			System.out.println(testCaseResult.getTestCase());
-			String expected = testCaseResult.getValues().getExpected();
-			String actual = testCaseResult.getValues().getActual();
-			System.out.print("\texpected: ");
-			System.out.print(expected);
-			System.out.print(", actual: ");
-			System.out.println(actual);
-			System.out.print("\tpassed? ");
-			System.out.println(Boolean.toString(expected.equals(actual)));
-			System.out.println();
+			Result.Values values = testCaseResult.getValues();
+			if(values != null) {
+				String expected = values.getExpected();
+				String actual = values.getActual();
+				System.out.print("\texpected: ");
+				System.out.print(expected);
+				System.out.print(", actual: ");
+				System.out.println(actual);
+				System.out.print("\tpassed? ");
+				System.out.println(testCaseResult.isPassed());
+				System.out.println();
+			} else {
+				System.out.println("\tannotated with @TestCase, but no assertion detected\n");
+			}
 		}
 	}
 	
 	public static void main(String[] args) 
 			throws IllegalAccessException, IllegalArgumentException, 
-				InvocationTargetException, InstantiationException {
+				InstantiationException {
 		
 		String testClassPkg = null;
 		

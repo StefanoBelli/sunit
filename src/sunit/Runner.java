@@ -7,6 +7,8 @@ import java.util.Vector;
 
 public final class Runner {
 	
+	private Runner() {}
+
 	private enum CheckType {
 		CLASS, METHOD
 	}
@@ -38,7 +40,7 @@ public final class Runner {
 	
 	public static TestResult run(Class<?> test) 
 			throws IllegalAccessException, IllegalArgumentException, 
-					InvocationTargetException, InstantiationException {
+					InstantiationException {
 		
 		if(!hasAnnotation(test, "sunit.annotations.TestClass"))
 			return null;
@@ -51,26 +53,26 @@ public final class Runner {
 		Object newInstance = test.newInstance();
 		
 		boolean passed = true;
-		String expectedTrue = Boolean.toString(true);
 		
 		for(Method method : publicMethods) {
 			if(hasAnnotation(method, "sunit.annotations.TestCase")) {
 				Result.Values values = null;
 				
+				boolean singlePassed = true;
 				try {
 					method.invoke(newInstance);
 				} catch(InvocationTargetException invokee) {
 					AssertionException e = (AssertionException) invokee.getCause();
 					
-					boolean res = e.isPassed();
-					if(!res) {
+					if(!e.isPassed()) {
 						passed = false;
+						singlePassed = false;
 					}
-					
-					values = new Result.Values(expectedTrue, Boolean.toString(res));
+
+					values = new Result.Values(e.getExpected(), e.getActual());
 				}
 				
-				Result result = new Result(method.getName(), values);
+				Result result = new Result(method.getName(), values, singlePassed);
 				results.add(result);
 			}
 		}

@@ -1,7 +1,7 @@
 import sunit.annotations.TestCase;
 import sunit.annotations.TestClass;
 
-import static sunit.assertions.Assertions.assertTrue;
+import static sunit.assertions.Assertions.*;
 
 @TestClass
 public class TestExample {
@@ -13,6 +13,21 @@ public class TestExample {
 	
 	@TestCase
 	public void testCaseB() {
-		assertTrue(true);
+		assertFalse(false);
+	}
+	
+	@TestCase
+	public void testCaseC() {
+		assertEquals("kiao", "kiao");	
+	}
+
+	@TestCase
+	public void testCaseD() {
+		assertEquals(1,1);
+	}
+
+	@TestCase
+	public void testCaseE() {
+		assertEquals(3.14, 3.14);
 	}
 }

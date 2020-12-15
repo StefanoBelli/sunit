@@ -22,10 +22,12 @@ public final class Result {
 	
 	private String testCase;
 	private Values values;
-	
-	public Result (String testCase, Values values) {
+	private boolean passed;
+
+	public Result (String testCase, Values values, boolean passed) {
 		this.testCase = testCase;
 		this.values = values;
+		this.passed = passed;
 	}
 	
 	public String getTestCase() {
@@ -34,5 +36,9 @@ public final class Result {
 	
 	public Values getValues() {
 		return values;
+	}
+
+	public boolean isPassed() {
+		return passed;
 	}
 }
